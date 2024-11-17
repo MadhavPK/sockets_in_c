@@ -18,7 +18,7 @@ INCDIR = inc
 OBJDIR = obj
 
 # Target executable
-TARGET = $(OBJDIR)/client.exe
+TARGET = $(OBJDIR)/$(notdir $(CURDIR)).exe
 
 # List all .c files in src directory
 SOURCES = $(wildcard $(SRCDIR)/*.c)
