@@ -16,9 +16,6 @@
 
 int main(int argc, char const* argv[])
 {
-    // WSADATA wsaData;
-    // SOCKET serverSocket, clientSocket;
-    // struct sockaddr_in serverAddr, clientAddr;
     server_data_t data;
     char buffer[BUFFER_SIZE];
     uint16_t buf_len = sizeof(buffer);

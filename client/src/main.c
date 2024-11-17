@@ -16,9 +16,6 @@
 
 int main(int argc, char const* argv[])
 {
-    // WSADATA wsaData;
-    // SOCKET clientSocket;
-    // struct sockaddr_in serverAddr;
     client_data_t data;
     char buffer[BUFFER_SIZE];
     const char* message = "Hello from NoobMaster!";

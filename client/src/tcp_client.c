@@ -12,7 +12,10 @@
 
 void clientInit(client_data_t *data)
 {
-    // Step 1: Initialize Winsock
+    uint16_t server_port = 8080;
+    char server_ip[16] = "127.0.0.1";
+
+    //                  Step 1: Initialize Winsock
     printf("Initialize Winsock...\n");
     if(WSAStartup(MAKEWORD(2,2), &(data->wsaData)) != 0)
     {
@@ -20,7 +23,7 @@ void clientInit(client_data_t *data)
         exit(1);
     }
 
-    // Step 2: Create a client socket
+    //                  Step 2: Create a client socket
     printf("Create client socket...\n");
     data->clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if(data->clientSocket == INVALID_SOCKET)
@@ -30,10 +33,30 @@ void clientInit(client_data_t *data)
         exit(1);
     }
 
-    // Step 3: Specify the server address and port
+    //                  Step 3: Specify the server address and port
+    printf("Enter Server Port Number: ");
+    scanf("%hd", &server_port);
+    printf("\n");
+
+    printf("Enter Server IP address: ");
+    if(scanf("%16s", server_ip) <= 0)  // Limit the input size to avoid buffer overflow
+    {
+        // Remove the trailing newline character if present
+        server_ip[strcspn(server_ip, "\n")] = '\0';
+    }
+    // Check if the IP is valid
+    if(strlen(server_ip) <= 6)
+    {
+        printf("ERROR: wrong IP address: %s\n", server_ip);
+        exit(1);
+
+    }
+    
+    printf("You entered: %s\n", server_ip);
+
     data->serverAddr.sin_family = AF_INET;
-    data->serverAddr.sin_port = htons(SERVER_PORT);
-    inet_pton(AF_INET, SERVER_IP, &(data->serverAddr.sin_addr));
+    data->serverAddr.sin_port = htons(server_port);
+    inet_pton(AF_INET, server_ip, &(data->serverAddr.sin_addr));
 
     // Step 4: Connect to the server
     if(connect(data->clientSocket, (struct sockaddr*)&(data->serverAddr), sizeof(data->serverAddr)) == SOCKET_ERROR)
@@ -43,13 +66,13 @@ void clientInit(client_data_t *data)
         WSACleanup();
         exit(1);
     }
-    printf("Connected to server at %s:%d\n", SERVER_IP, SERVER_PORT);
+    printf("Connected to server at %s:%d\n", server_ip, server_port);
 
 }
 
 void clientCleanup(client_data_t *data)
 {
-    // Step 7: Clean up resources
+    //                  Step 7: Clean up resources
     printf("Clean up resources... :)\n");
     closesocket(data->clientSocket);
     WSACleanup();
