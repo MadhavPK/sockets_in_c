@@ -32,5 +32,7 @@ typedef struct server_data
 void printClientIP(server_data_t *data);
 void serverInit(server_data_t *data);
 void serverCleanup(server_data_t *data);
+void serverAcceptConn(server_data_t *data, int *clientAddrSize);
+int serverRxAndEcho(server_data_t *data, char *buffer, int buf_len);
 
 #endif /* __TCP_SERVER_H */

@@ -34,5 +34,8 @@ typedef struct client_data
 //              FUNCTION PROTOS
 void clientInit(client_data_t *data);
 void clientCleanup(client_data_t *data);
+void clientSend(client_data_t *data, const char* msg, int msg_len);
+void clientRecv(client_data_t *data, char *buffer);
+
 
 #endif /* __TCP_CLIENT_H */

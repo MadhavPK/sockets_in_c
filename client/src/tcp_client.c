@@ -77,3 +77,34 @@ void clientCleanup(client_data_t *data)
     closesocket(data->clientSocket);
     WSACleanup();
 }
+
+void clientSend(client_data_t *data, const char* msg, int msg_len)
+{
+    // Step 5: Send a message to the server
+        printf("Send message...\n");
+        if(send(data->clientSocket, msg, msg_len, 0) == SOCKET_ERROR)
+        {
+            printf("Send failed with error: %d\n", WSAGetLastError());
+            closesocket(data->clientSocket);
+            WSACleanup();
+            exit(1);
+        }
+        printf("Sent message: %s\n", msg);
+}
+
+void clientRecv(client_data_t *data, char *buffer)
+{
+    // Step 6: Receive the server's response
+    int bytesReceived = recv(data->clientSocket, buffer, BUFFER_SIZE, 0);
+    if(bytesReceived > 0)
+    {
+        buffer[bytesReceived] = '\0'; // Null-terminate the received data
+        printf("Received response from server: %s\n", buffer);
+    } else if(bytesReceived == 0)
+    {
+        printf("Server closed the connection\n");
+    } else
+    {
+        printf("recv failed with error: %d\n", WSAGetLastError());
+    }
+}

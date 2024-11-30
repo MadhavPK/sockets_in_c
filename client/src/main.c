@@ -18,35 +18,16 @@ int main(int argc, char const* argv[])
 {
     client_data_t data;
     char buffer[BUFFER_SIZE];
-    const char* message = "Hello from NoobMaster!";
-
+    const char* welcome_message = "Hello from NoobMaster!";
+    int welcome_message_len = strlen(welcome_message);
     /* Step 1 - 4 */
     clientInit(&data);
 
-    // Step 5: Send a message to the server
-    printf("Send message...\n");
-    if(send(data.clientSocket, message, strlen(message), 0) == SOCKET_ERROR)
-    {
-        printf("Send failed with error: %d\n", WSAGetLastError());
-        closesocket(data.clientSocket);
-        WSACleanup();
-        return 1;
-    }
-    printf("Sent message: %s\n", message);
-
-    // Step 6: Receive the server's response
-    int bytesReceived = recv(data.clientSocket, buffer, BUFFER_SIZE, 0);
-    if(bytesReceived > 0)
-    {
-        buffer[bytesReceived] = '\0'; // Null-terminate the received data
-        printf("Received response from server: %s\n", buffer);
-    } else if(bytesReceived == 0)
-    {
-        printf("Server closed the connection\n");
-    } else
-    {
-        printf("recv failed with error: %d\n", WSAGetLastError());
-    }
+    /* Step 5 */
+    clientSend(&data, welcome_message, welcome_message_len);
+    
+    /* Step 6 */
+    clientRecv(&data, buffer);
 
     /* Step 7 */
     clientCleanup(&data);
